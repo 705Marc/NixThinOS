@@ -19,16 +19,17 @@
   services.cage = {
     enable = true;
     user = "kiosk";
-    tty = 1; # Festlegen auf TTY1
     
     # Der absolute Pfad zu Firefox
     program = "${pkgs.firefox}/bin/firefox --kiosk https://nixos.org";
     
-    # Diese Variablen sind der "Joker" für VMs
+    # Diese Variablen sind der Schlüssel für VMware
     environment = {
-      WLR_RENDERER_ALLOW_SOFTWARE = "1"; # Erzwingt Start auch ohne 3D-Beschleunigung
-      WLR_NO_HARDWARE_CURSORS = "1";     # Behebt oft unsichtbare Mauszeiger in VMware
+      WLR_RENDERER_ALLOW_SOFTWARE = "1"; 
+      WLR_NO_HARDWARE_CURSORS = "1";     
       XDG_SESSION_TYPE = "wayland";
+      # Optional: Hilft Firefox, Wayland nativ zu nutzen
+      MOZ_ENABLE_WAYLAND = "1";
     };
   };
 
