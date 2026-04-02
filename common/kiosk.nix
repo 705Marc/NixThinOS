@@ -1,24 +1,28 @@
 { pkgs, ... }:
 
 {
-  # Grafiktreiber aktivieren
+  # Grafik-Support
   hardware.graphics.enable = true;
 
-  # Einen speziellen User für den Kiosk anlegen
+  # Kiosk-User anlegen
   users.users.kiosk = {
     isNormalUser = true;
-    # Automatischer Login für diesen User
+    extraGroups = [ "video" ];
   };
 
-  # Cage (Kiosk-Modus) konfigurieren
+  # Autologin auf tty1 (damit Cage sofort startet)
+  services.getty.autologinUser = "kiosk";
+
   services.cage = {
     enable = true;
     user = "kiosk";
-    # Hier definieren wir, was gestartet wird. 
-    # Zum Testen nehmen wir erst mal den Firefox im Kiosk-Modus.
+    # Umgebungsvariable für Software-Rendering in VMs hinzufügen
+    extraArguments = [ "-s" ]; 
     program = "${pkgs.firefox}/bin/firefox --kiosk https://nixos.org";
   };
 
-  # Firefox installieren, damit cage ihn findet
+  # WICHTIG für VMware: Gast-Erweiterungen aktivieren
+  virtualisation.vmware.guest.enable = true;
+
   environment.systemPackages = [ pkgs.firefox ];
 }
