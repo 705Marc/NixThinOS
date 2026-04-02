@@ -12,6 +12,7 @@
       modules = [
         ./hosts/vm-test/configuration.nix
         ./hosts/vm-test/hardware-configuration.nix
+        ./common/kiosk.nix
       ];
     };
   };
